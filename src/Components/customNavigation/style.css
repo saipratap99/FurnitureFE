@@ -1,0 +1,23 @@
+.active-category {
+  border-bottom: 3px solid darkslateblue;
+  border-radius: 0px;
+  
+}
+
+.navbar {
+  background-color: #5a5ab6;
+}
+
+.category-item a {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: Helvetica, sans-serif;
+  color: darkslateblue;
+}
+
+.category-item:hover a{
+  transform: scale(1.1);
+}
+/* .category-navigation-header { */
+  /* background-color: rgb(218, 218, 218) !important; */
+/* } */

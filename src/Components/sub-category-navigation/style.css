@@ -1,0 +1,27 @@
+.sub-category-panel {
+  background-color: #F3F1F2;
+}
+
+.sub-category-btn {
+  color: #0A0A0A;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px;
+  border: none;
+}
+
+.active-sub-category {
+  color: #2d3091;
+}
+
+.sub-category-list {
+  padding: 16px 24px;
+}
+
+.sub-category-item {
+  border-bottom: rgb(201, 201, 201) 1px solid;
+}
+
+.sub-category-item:last-child {
+  border-bottom: none;
+}

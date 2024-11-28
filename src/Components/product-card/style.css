@@ -1,0 +1,23 @@
+.carousel-indicator-button{
+  border: none;
+  padding: 2px 14px;
+  margin: 0 4px;
+  background-color: rgb(226, 226, 226);
+}
+
+.indicator-button-active{
+  background-color: rgb(169, 169, 169);
+}
+
+.custom-carousel.carousel-item.active {
+  animation: image-slider 1s ease-in;
+}
+
+@keyframes image-slider {
+  from {
+    opacity: 0.8;
+    transform: scale(0.9);
+  }
+  to {opacity: 1;
+    transform: scale(1);}
+}
