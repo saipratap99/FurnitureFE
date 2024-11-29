@@ -1,14 +1,8 @@
 // GenericModal.js
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { FormElement } from "../../types/form-model";
 
-interface FormElement {
-  label: string;
-  name: string;
-  type: string;
-  placeholder: string;
-  required?: boolean;
-}
 interface FormPopUpProps {
   show: boolean;
   handleClose: any;

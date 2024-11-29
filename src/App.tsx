@@ -6,6 +6,7 @@ import HorizontalNavigation from "./Components/customNavigation/HorizontalNaviga
 import HomePage from "./Components/pages/homePage/homePage";
 import CategoryPage from "./Components/pages/category-page/categoryPage";
 import ContactUsPage from "./Components/pages/contact-us/contact-us";
+import ViewCategories from "./Components/pages/view-categories/view-categories";
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -99,6 +100,7 @@ const App: React.FC = () => {
         </Route>
         <Route path="category/:categoryName" element={<CategoryPage />} />
         <Route path="contact-us" element={<ContactUsPage />} />
+        <Route path="view-categories" element={<ViewCategories />} />
       </Routes>
     </BrowserRouter>
   );
