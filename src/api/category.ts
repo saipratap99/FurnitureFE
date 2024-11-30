@@ -21,3 +21,13 @@ export const getCategories = async () => {
     console.error("Error posting data:", err);
   }
 };
+
+export const getSubcategories = async (categ_id:any) => {
+  try {
+    const response = await axios.get(`http://localhost:5194/api/v1/Category/GetSubcategories/${categ_id}`);
+    console.log("Get data:", response.data);
+    return response.data;
+  } catch (err) {
+    console.error("Error posting data:", err);
+  }
+};

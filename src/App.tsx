@@ -7,6 +7,9 @@ import HomePage from "./Components/pages/homePage/homePage";
 import CategoryPage from "./Components/pages/category-page/categoryPage";
 import ContactUsPage from "./Components/pages/contact-us/contact-us";
 import ViewCategories from "./Components/pages/view-categories/view-categories";
+import CatNewPage from "./api/cat-new";
+import SubcategoryList from "./api/cat-new";
+import ProductSearch from "./api/prodBySubcate";
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -101,6 +104,9 @@ const App: React.FC = () => {
         <Route path="category/:categoryName" element={<CategoryPage />} />
         <Route path="contact-us" element={<ContactUsPage />} />
         <Route path="view-categories" element={<ViewCategories />} />
+        <Route path="categ/:categName" element={<SubcategoryList />} />
+        <Route path="prod/:subcategName" element={<ProductSearch />} />
+
       </Routes>
     </BrowserRouter>
   );
