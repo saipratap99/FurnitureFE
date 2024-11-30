@@ -5,5 +5,5 @@ export interface FormElement {
   placeholder: string;
   required?: boolean;
 
-  dropDownData?: { [key: string]: string };
+  dropDownData?: { [key: string]: string }[];
 }
