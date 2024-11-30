@@ -11,6 +11,8 @@ interface FormPopUpProps {
   handleSubmit: any;
 
   formElements: FormElement[];
+
+  formValues?: { [key: string]: string };
 }
 
 const FormPopUp = ({
@@ -19,9 +21,13 @@ const FormPopUp = ({
   handleSubmit,
   title,
   formElements,
+  formValues,
 }: FormPopUpProps) => {
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<{ [key: string]: string }>(
+    formValues || {}
+  );
 
+  console.log("passed form val", formValues);
   // Handle input change
   const handleChange = (e: any) => {
     const { name, value } = e.target;

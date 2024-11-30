@@ -1,12 +1,11 @@
 import axios from "axios";
 
+const apiPath = "http://localhost:5194/api/v1";
 export const postCategory = async (payload: any) => {
   try {
-    const response = await axios.post(
-      "http://localhost:5194/api/v1/Category/Create",
-      payload
-    );
+    const response = await axios.post(`${apiPath}/Category/Create`, payload);
     console.log("Posted data:", response.data);
+    return response.data;
   } catch (err) {
     console.error("Error posting data:", err);
   }
@@ -14,8 +13,33 @@ export const postCategory = async (payload: any) => {
 
 export const getCategories = async () => {
   try {
-    const response = await axios.get("http://localhost:5194/api/v1/Category");
+    const response = await axios.get(`${apiPath}/Category`);
     console.log("Get data:", response.data);
+    return response.data;
+  } catch (err) {
+    console.error("Error posting data:", err);
+  }
+};
+
+export const editCategories = async (payload: any) => {
+  try {
+    const response = await axios.put(
+      `${apiPath}/Category/Update/${payload["id"]}`,
+      payload
+    );
+    console.log("Update data:", response.data);
+    return response.data;
+  } catch (err) {
+    console.error("Error posting data:", err);
+  }
+};
+
+export const deleteCategories = async (payload: any) => {
+  try {
+    const response = await axios.delete(
+      `${apiPath}/Category/Delete/${payload["id"]}`
+    );
+    console.log("Delete data:", response.data);
     return response.data;
   } catch (err) {
     console.error("Error posting data:", err);
