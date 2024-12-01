@@ -168,18 +168,6 @@ const HomePage: FC<HomePageProps> = () => {
   return (
     <div>
       <Carousel slides={slides} height={400} />
-      <div className="App">
-        <Button variant="primary" onClick={() => setShowModal(true)}>
-          Open Modal
-        </Button>
-        <FormPopUp
-          show={showModal}
-          title="Create Product"
-          handleClose={() => setShowModal(false)}
-          handleSubmit={handleModalSubmit}
-          formElements={formElements}
-        />
-      </div>
       <ProductsCarouselLayout
         products={products}
         isImages={false}

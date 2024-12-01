@@ -74,15 +74,15 @@ const ViewLeads = () => {
       {showToaster && <Toaster message={toasterMessage} color={toasterColor} />}
       <h1>Leads Management</h1>
       <div>
-        <div
-          style={{
-            border: "1px solid #ccc",
-            padding: "16px",
-            marginBottom: "16px",
-          }}
-        >
+        <div>
           {leads.map((lead: any) => (
-            <div className="d-flex justify-content-between">
+            <div
+              className="d-flex justify-content-between border box-shadow"
+              style={{
+                padding: "16px",
+                marginBottom: "16px",
+              }}
+            >
               <div key={lead.id}>
                 <h2>{lead.contactUs.name}</h2>
                 <p>
@@ -106,11 +106,11 @@ const ViewLeads = () => {
                 {lead.leadHistories && lead.leadHistories.length > 0 ? (
                   <ul>
                     {lead.leadHistories.map((history: any) => (
-                      <li key={history.id}>
-                        <p>{history.comments}</p>
+                      <li key={history.id} className="border-top">
                         <small>
                           {new Date(history.date).toLocaleDateString()}
                         </small>
+                        <p>{history.comments}</p>
                       </li>
                     ))}
                   </ul>
@@ -123,6 +123,7 @@ const ViewLeads = () => {
                 <form onSubmit={handleAddHistory}>
                   <div>
                     <textarea
+                      className="form-control mb-2"
                       placeholder="Add your comments"
                       value={newHistory.comments}
                       onChange={(e) =>
@@ -137,6 +138,7 @@ const ViewLeads = () => {
                   </div>
                   <div>
                     <select
+                      className="form-control"
                       name="status"
                       id=""
                       onChange={(e) => {
