@@ -15,6 +15,7 @@ const LeftNavigation: React.FC<Props> = ({
 }) => {
   const handleSubCategoryClick = (subCategoryName: string) => {
     onSubCategorySelect(subCategoryName);
+    
   };
 
   return (

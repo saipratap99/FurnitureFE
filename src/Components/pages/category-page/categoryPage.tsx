@@ -1,177 +1,104 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import "./style.css";
 import SubCategoryNavigation from "../../sub-category-navigation/sub-category-navigation";
 import ProductCard from "../../product-card/productCard";
+import axios from "axios";
+import { getCategories } from "../../../api/category";
+import HorizontalNavigation from "../../customNavigation/HorizontalNavigation";
+import secureLocalStorage from "react-secure-storage";
 interface CategoryPageProps {}
 
 const CategoryPage: FC<CategoryPageProps> = () => {
   const { categoryName } = useParams();
+  console.log(categoryName)
+  const [products, setProducts] = useState<any>([]);
+  const [categories, setCategories] = useState<any>([  ]);
+  const [subcategories, setSubcategories] = useState<any>([]);
+  const [cart, setCart] = useState<any[]>([]);
+
+  // const [filteredProducts, setFilteredProducts] = useState<any>([]);
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
   let [searchParams, setSearchParams] = useSearchParams();
   const selectedCategory = categoryName;
 
-  const products = [
-    {
-      id: 6232,
-      name: "Computed or Laptop Table",
-      description: "CLT1215",
-      imagesURLs: [
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Table+Laptop+white+1A.jpg", // Library chair
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Table+Laptop+white+1B.jpg", // Another angle
-      ],
-      price: 22000,
-      category: ["Library", "Office"],
-      subCategory: "Tables",
-    },
-    {
-      id: 1232,
-      name: "Safe Blue",
-      description: "SB101",
-      imagesURLs: [
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Safe+case+1A.jpg", // Library chair
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Safe+case+1B.jpg", // Another angle
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Safe+case+1C.jpg", // Another angle
-      ],
-      price: 22000,
-      category: ["Library", "Office"],
-      subCategory: "Safes",
-    },
-    {
-      id: 3252,
-      name: "Office Working Chair",
-      description: "OWC1211",
-      imagesURLs: [
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Office+chair+1A.jpg", // Library chair
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Office+chair+1B.jpg", // Another angle
-      ],
-      price: 22000,
-      category: ["Library", "Office"],
-      subCategory: "Chair",
-    },
-    {
-      id: 1252,
-      name: "Safe Grey",
-      description: "SG1321",
-      imagesURLs: [
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Safe+case+Grey+1A.jpg", // Library chair
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Safe+case+Grey+1B.jpg", // Another angle
-      ],
-      price: 22000,
-      category: ["Library", "Office"],
-      subCategory: "Safes",
-    },
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [productsResponse, categoriesResponse, subcategoriesResponse] = await Promise.all([
+          axios.get("http://localhost:5194/api/v1/Product"), 
+          axios.get("http://localhost:5194/api/v1/Category"),
+          axios.get("http://localhost:5194/api/v1/SubCategory"),
+        ]);
+console.log("products",productsResponse.data)
+        setProducts(productsResponse.data);
+        setCategories(categoriesResponse.data);
+        setSubcategories(subcategoriesResponse.data);
+        // setFilteredProducts(productsResponse.data)
 
-    {
-      id: 5252,
-      name: "Computed or Laptop Table",
-      description: "CLT1211",
-      imagesURLs: [
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Table+Laptop+plain+1A.jpg", // Library chair
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Table+Laptop+plain+1B.jpg", // Another angle
-      ],
-      price: 22000,
-      category: ["Library", "Office"],
-      subCategory: "Tables",
-    },
-    {
-      id: 6252,
-      name: "Magazine Display Rack",
-      description: "MDS1611",
-      imagesURLs: [
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Magazine+1A.jpg", // Library chair
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Magazine+1B.jpg", // Another angle
-      ],
-      price: 22000,
-      category: ["Library", "Office"],
-      subCategory: "Magazine Display Racks",
-    },
-    {
-      id: 3252,
-      name: "Premium - Office Chair",
-      description: "POWC1211",
-      imagesURLs: [
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Office+chair+3A.png", // Library chair
-      ],
-      price: 22000,
-      category: ["Library", "Office"],
-      subCategory: "Chair",
-    },
-    {
-      id: 93631,
-      name: "Office table with racks",
-      description: "OR105",
-      imagesURLs: [
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Table+with+cupboard+1A.jpg",
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Table+with+cupboard+1B.jpg",
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Table+with+cupboard+1C.jpg",
-      ],
-      price: 76000,
-      category: ["Office"],
-      subCategory: "Tables",
-    },
-    {
-      id: 5,
-      name: "Conference Table",
-      description: "P105",
-      imagesURLs: [
-        "https://images.unsplash.com/photo-1556761175-b413da4baf72", // Large conference table
-        "https://images.unsplash.com/photo-1542744173-8e7e53415bb0", // Another conference setting
-      ],
-      price: 76000,
-      category: ["Office"],
-      subCategory: "Tables",
-    },
-    {
-      id: 3252,
-      name: "Premium - Office Chair Z",
-      description: "POWC1211",
-      imagesURLs: [
-        "https://asp-bza-assets.s3.eu-north-1.amazonaws.com/images/demo1/Office+chair+2A.webp", // Library chair
-      ],
-      price: 22000,
-      category: ["Library", "Office"],
-      subCategory: "Chair",
-    },
-    {
-      id: 7,
-      name: "Auditorium Lighting",
-      description: "P107",
-      imagesURLs: [
-        "https://images.unsplash.com/photo-1556761175-b413da4baf72", // Auditorium lighting
-        "https://images.unsplash.com/photo-1509042239860-f550ce710b93", // Another lighting setup
-      ],
-      price: 67000,
-      category: ["Auditorium"],
-      subCategory: "Lighting",
-    },
-  ];
+        // Fetch categories for the navigation bar
+        // getCategories().then((data) => setCategories(data));
 
-  const [searchQuery, setSearchQuery] = useState("");
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  const subCategories = [
-    {
-      id: 1,
-      name: "Chair",
-      category: ["Library", "Office", "Schools", "Auditorium"],
-    },
-    { id: 2, name: "Desk", category: ["Office", "Schools", "Library"] },
-    { id: 3, name: "Bookshelves", category: ["Library", "HouseHold"] },
-    { id: 4, name: "Tables", category: ["Commercial", "Office"] },
-    {
-      id: 5,
-      name: "Projectors",
-      category: ["Office", "Schools", "Auditorium", "Commercial"],
-    },
-    { id: 6, name: "Couch", category: ["HouseHold", "Library", "Commercial"] },
-    {
-      id: 7,
-      name: "Whiteboard",
-      category: ["Schools", "Office", "Commercial"],
-    },
-    { id: 8, name: "Sound System", category: ["Auditorium", "Commercial"] },
-    { id: 9, name: "Decorations", category: ["HouseHold"] },
-    { id: 10, name: "Lighting", category: ["Auditorium", "Commercial"] },
-  ];
+    fetchData();
+  }, []);
+
+// Add a product to the cart
+const handleAddToCart = (product: any) => {
+  setCart((prevCart) => {
+    const existingProduct = prevCart.find((item) => item.id === product.id);
+    if (existingProduct) {
+      return prevCart.map((item) =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+    } else {
+      return [...prevCart, { ...product, quantity: 1 }];
+    }
+  });
+};
+
+// Remove a product from the cart or decrement its quantity
+const handleRemoveFromCart = (productId: any) => {
+  setCart((prevCart) =>
+    prevCart
+      .map((item) =>
+        item.id === productId
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+      .filter((item) => item.quantity > 0)
+  );
+};
+
+// Place order
+const handlePlaceOrder = async () => {
+  try {
+    const orderDetails = cart.map((item) => ({
+      quantity: item.quantity,
+      productId: item.id,
+      // userId:secureLocalStorage.getItem("userId")
+    }));
+
+    const response = await axios.post(
+      "http://localhost:5194/api/v1/Order/Create",
+      orderDetails
+    );
+    console.log("Order placed successfully:", response.data);
+    alert("Order placed successfully!");
+    setCart([]); // Clear the cart
+  } catch (error) {
+    console.error("Error placing order:", error);
+    alert("Failed to place the order. Please try again.");
+  }
+};
+
 
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(
     searchParams.get("subCategory")
@@ -181,25 +108,29 @@ const CategoryPage: FC<CategoryPageProps> = () => {
     setSelectedSubCategory(subCategoryName);
   };
 
-  // Filter products based on selected category, subcategory, and search query
-  const filteredProducts = products.filter(
-    (product) =>
-      (!selectedCategory || product.category.includes(selectedCategory)) &&
-      (!selectedSubCategory || product.subCategory === selectedSubCategory) && // Updated line
-      (!searchQuery ||
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+  // Filter products by selected category name
+const filteredProducts = products.filter(
+  (product: any) =>
+    product.subCategory.categories.some(
+      (category: any) => category.name === selectedCategory
+    )
+);
 
-  // Filter subcategories based on selected category
-  const filteredSubCategories = subCategories.filter(
-    (subCategory) =>
-      !selectedCategory || subCategory.category.includes(selectedCategory)
-  );
+// Filter subcategories based on selected category name
+const filteredSubCategories = subcategories.filter(
+  (subCategory: any) =>
+    subCategory.categories.some(
+      (category: any) => category.name === selectedCategory
+    )
+);
 
   return (
+    <>
+    <HorizontalNavigation categories={categories} />
     <div className="category-container-outer my-3">
       <div className="category-container-inner row mx-3">
         <div className="left-nav col-2 position-sticky top-3 my-2">
+       
           <div>
             <SubCategoryNavigation
               subCategories={filteredSubCategories}
@@ -212,17 +143,60 @@ const CategoryPage: FC<CategoryPageProps> = () => {
         <div className="col-10">
           <h3>{selectedSubCategory ? selectedSubCategory : "All Products"}</h3>
           <div className="row my-2 row-gap-3">
-            {filteredProducts.map((product) => {
+            {filteredProducts.map((product:any) => {
               return (
                 <div className="col-3">
-                  <ProductCard product={product} height={400} />
+                  <ProductCard product={product} height={400} onAddToCart={handleAddToCart}/>
                 </div>
               );
             })}
           </div>
         </div>
+        {/* Cart Section */}
+        <div className="col-3">
+            <div className="cart-container p-3 border rounded shadow-sm">
+              <h4>Cart</h4>
+              {cart.length === 0 ? (
+                <p>Your cart is empty.</p>
+              ) : (
+                <ul className="list-unstyled">
+                  {cart.map((item) => (
+                    <li key={item.id} className="my-2">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                          <strong>{item.name}</strong>
+                          <p className="mb-0">${item.price}</p>
+                        </div>
+                        <button
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleRemoveFromCart(item.id)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {cart.length > 0 && (
+                <div className="mt-3">
+                  <h5>
+                    Total: $
+                    {cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
+                  </h5>
+                  <button
+                    className="btn btn-primary btn-block"
+                    onClick={handlePlaceOrder}
+                  >
+                    Place Order
+                  </button>
+                </div>
+              )}
+            </div>
+            </div>
       </div>
     </div>
+    </>
   );
 };
 

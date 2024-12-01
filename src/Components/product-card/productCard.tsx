@@ -5,13 +5,15 @@ import { Product } from "../../types/product.model";
 import "./style.css";
 
 interface Props {
-  product: Product;
+  product: any;
   height: number;
+  onAddToCart: (product: any) => void;
 }
-const ProductCard: React.FC<Props> = ({ product, height }) => {
+const ProductCard: React.FC<Props> = ({ product, height, onAddToCart }) => {
   const inlineStyle = {
     height: height + "px",
   };
+  console.log("product card", product)
 
   const [currIndex, setCurrIndex] = useState(0);
   /** 
@@ -38,7 +40,7 @@ const ProductCard: React.FC<Props> = ({ product, height }) => {
           className="carousel-indicators custom-carousel-indicators"
           style={arrowNavsStyle}
         >
-          {product.imagesURLs.map((img, index) => {
+          {product.images.map((imageUrl:any, index:any) => {
             return (
               <button
                 type="button"
@@ -53,7 +55,7 @@ const ProductCard: React.FC<Props> = ({ product, height }) => {
           })}
         </div>
         <div className="carousel-inner" style={imageStyle}>
-          {product.imagesURLs.map((url, index) => (
+          {product.images.map((imageUrl:any, index:any) => (
             <div
               key={index}
               className={`custom-carousel carousel-item ${
@@ -61,9 +63,9 @@ const ProductCard: React.FC<Props> = ({ product, height }) => {
               }`}
             >
               <img
-                src={url}
+                src={imageUrl.imageUrl}
                 className="d-block w-100 rounded"
-                alt={`sImage ${index}`}
+                alt={`Image ${index}`}
               />
             </div>
           ))}
@@ -84,7 +86,7 @@ const ProductCard: React.FC<Props> = ({ product, height }) => {
               <span className="pe-1">
                 <b>$</b>
               </span>
-              55.5
+              {product.price}
             </div>
             <div>
               <i>5</i> <span>&#11088;</span>
@@ -95,6 +97,9 @@ const ProductCard: React.FC<Props> = ({ product, height }) => {
             className="carousel slide"
             data-bs-ride="carousel"
           ></div>
+           <button className="add-to-cart-button" onClick={() => onAddToCart(product)}>
+        Add to Cart
+      </button>
         </div>
       </div>
     </div>
