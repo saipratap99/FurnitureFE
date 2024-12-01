@@ -26,7 +26,7 @@ const HorizontalNavigation: React.FC<Props> = ({ categories }) => {
 
   return (
     <div
-      className="d-flex justify-content-center bg-white category-navigation-header"
+      className="d-flex justify-content-center bg-white category-navigation-header shadow-sm"
       role="group"
       aria-label="Category navigation"
     >

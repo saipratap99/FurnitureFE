@@ -76,9 +76,6 @@ const HomePage = () => {
       <Carousel slides={slides} height={400} />
 
       {/* Open Modal Button */}
-      <Button variant="primary" onClick={() => setShowModal(true)}>
-        Open Modal
-      </Button>
       <FormPopUp
         show={showModal}
         title="Create Product"

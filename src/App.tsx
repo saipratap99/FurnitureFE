@@ -20,6 +20,8 @@ import Footer from "./user-flow/footer";
 import ViewSubCategories from "./Components/pages/view-subcategories/view-subcategories";
 import ViewProductTags from "./Components/pages/view-product-tags/view-product-tags";
 import ViewLeads from "./Components/pages/view-leads/view-leads";
+import AdminDashboard from "./Components/pages/admin/admin";
+import ViewUsers from "./Components/pages/view-users/view-users";
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -28,7 +30,7 @@ const App: React.FC = () => {
   const [categoriesList, setCategoriesList] = useState<any[]>([]);
 
   // console.log("userId",user)
-  
+
   // getCategories().then((data) => setCategoriesList(data));
   // const categories = [
   //   {
@@ -113,10 +115,11 @@ const App: React.FC = () => {
       <div className="position-sticky top-0 header-section">
         <Header />
 
-       <><HorizontalNavigation categories={categoriesList} /></>
-      
+        <>
+          <HorizontalNavigation categories={categoriesList} />
+        </>
       </div>
-      
+
       <Routes>
         <Route path="/" element={<HomePage />}>
           <Route index element={<HomePage />} />
@@ -134,13 +137,11 @@ const App: React.FC = () => {
         <Route path="view-subcategories" element={<ViewSubCategories />} />
         <Route path="view-product-tags" element={<ViewProductTags />} />
         <Route path="view-leads" element={<ViewLeads />} />
+        <Route path="view-users" element={<ViewUsers />} />
+        <Route path="admin" element={<AdminDashboard />} />
       </Routes>
-      <div>
-      {/* <Footer/> */}
-      </div>
+      <div>{/* <Footer/> */}</div>
     </BrowserRouter>
-
-    
   );
 };
 
