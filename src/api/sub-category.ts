@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const apiPath = "http://localhost:5194/api/v1";
-export const postCategory = async (payload: any) => {
+export const postSubCategory = async (payload: any) => {
   try {
-    const response = await axios.post(`${apiPath}/Category/Create`, payload);
+    const response = await axios.post(`${apiPath}/SubCategory/Create`, payload);
     console.log("Posted data:", response.data);
     return response.data;
   } catch (err) {
@@ -11,9 +11,9 @@ export const postCategory = async (payload: any) => {
   }
 };
 
-export const getCategories = async () => {
+export const getSubCategories = async () => {
   try {
-    const response = await axios.get(`${apiPath}/Category`);
+    const response = await axios.get(`${apiPath}/SubCategory`);
     console.log("Get data:", response.data);
     return response.data;
   } catch (err) {
@@ -21,33 +21,23 @@ export const getCategories = async () => {
   }
 };
 
-<<<<<<< HEAD
-export const getSubcategories = async (categ_id:any) => {
-  try {
-    const response = await axios.get(`http://localhost:5194/api/v1/Category/GetSubcategories/${categ_id}`);
-    console.log("Get data:", response.data);
-=======
-export const editCategories = async (payload: any) => {
+export const editSubCategories = async (payload: any) => {
   try {
     const response = await axios.put(
-      `${apiPath}/Category/Update/${payload["id"]}`,
+      `${apiPath}/SubCategory/Update/${payload["id"]}`,
       payload
     );
     console.log("Update data:", response.data);
->>>>>>> main
     return response.data;
   } catch (err) {
     console.error("Error posting data:", err);
   }
-<<<<<<< HEAD
-};
-=======
 };
 
-export const deleteCategories = async (payload: any) => {
+export const deleteSubCategories = async (payload: any) => {
   try {
     const response = await axios.delete(
-      `${apiPath}/Category/Delete/${payload["id"]}`
+      `${apiPath}/SubCategory/Delete/${payload["id"]}`
     );
     console.log("Delete data:", response.data);
     return response.data;
@@ -55,4 +45,3 @@ export const deleteCategories = async (payload: any) => {
     console.error("Error posting data:", err);
   }
 };
->>>>>>> main

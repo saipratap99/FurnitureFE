@@ -10,7 +10,6 @@ import ViewCategories from "./Components/pages/view-categories/view-categories";
 import CatNewPage from "./api/cat-new";
 import SubcategoryList from "./api/cat-new";
 import ProductSearch from "./api/prodBySubcate";
-// import ViewSubCategories from "./Components/pages/view-subcategories/view-subcategories";
 import Login from "./user-flow/login";
 import Register from "./user-flow/register";
 import secureLocalStorage from "react-secure-storage";
@@ -18,6 +17,7 @@ import { getCategories } from "./api/category";
 import UserHome from "./user-flow/user-home";
 import Footer from "./user-flow/footer";
 
+import ViewSubCategories from "./Components/pages/view-subcategories/view-subcategories";
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -129,6 +129,7 @@ const App: React.FC = () => {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="user-home" element={<UserHome />} />
+        <Route path="view-subcategories" element={<ViewSubCategories />} />
       </Routes>
       <div>
       {/* <Footer/> */}

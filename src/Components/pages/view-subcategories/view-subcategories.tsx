@@ -3,52 +3,79 @@ import { Button, Table } from "react-bootstrap";
 import { FormElement } from "../../../types/form-model";
 import FormPopUp from "../../formsPopUp/forms-pop-up";
 import {
-  postCategory,
-  getCategories,
-  editCategories,
-  deleteCategories,
-} from "../../../api/category";
+  postSubCategory,
+  getSubCategories,
+  editSubCategories,
+  deleteSubCategories,
+} from "../../../api/sub-category";
 import Toaster from "../../toaster/toaster";
+import { getCategories } from "../../../api/category";
 
-const ViewCategories = () => {
+const ViewSubCategories = () => {
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setEditShowModal] = useState(false);
   const [showToaster, setShowToaster] = useState(false);
   const [toasterMessage, setToasterMessage] = useState<string>("");
   const [toasterColor, setToasterColor] = useState<string>("bg-success");
+  const [subCategoriesList, setSubCategoriesList] = useState<any[]>([]);
   const [categoriesList, setCategoriesList] = useState<any[]>([]);
-  const [currentEditCategory, setCurrentEditCategory] = useState<any>(null);
+  const [currentEditSubCategory, setCurrentEditSubCategory] =
+    useState<any>(null);
+  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
+  const [addCategoryForm, setAddCategoryForm] = useState<FormElement[]>([]);
 
-  const categoryForm: FormElement[] = [
+  const subCategoryForm: FormElement[] = [
     {
-      label: "Category Name",
+      label: "Sub-Category Name",
       name: "name",
       type: "text",
-      placeholder: "Please enter the category",
+      placeholder: "Please enter new sub-category name",
       required: true,
     },
   ];
 
   useEffect(() => {
+    getSubCategories().then((data) => setSubCategoriesList(data));
     getCategories().then((data) => setCategoriesList(data));
   }, []);
 
   useEffect(() => {
-    if (currentEditCategory) setEditShowModal(true);
-  }, [currentEditCategory]);
-  const createCategorySubmit = (formData: any) => {
+    const newCategoryForm: FormElement[] = [
+      {
+        label: "Select Categories",
+        name: "categoryId",
+        type: "select",
+        placeholder: "Please enter new sub-category name",
+        required: true,
+        dropDownData: categoriesList.map((cat) => {
+          return {
+            value: cat["id"],
+            displayName: cat["name"],
+            isSelected: "false",
+          };
+        }),
+      },
+    ];
+    console.log("newCategoryForm", newCategoryForm);
+    setAddCategoryForm(newCategoryForm);
+  }, [categoriesList]);
+
+  useEffect(() => {
+    if (currentEditSubCategory) setEditShowModal(true);
+  }, [currentEditSubCategory]);
+  const createSubCategorySubmit = (formData: any) => {
     try {
-      postCategory(formData).then((data) => {
+      postSubCategory(formData).then((data) => {
         setShowToaster(true);
-        setToasterMessage("Created category successfully.");
-        setCategoriesList([...categoriesList, data]);
+        setToasterMessage("Created Sub-category successfully.");
+        setSubCategoriesList([...subCategoriesList, data]);
         setTimeout(() => {
           setShowToaster(false);
         }, 3000);
       });
     } catch (err) {
       setShowToaster(true);
-      setToasterMessage("Failed to create category.");
+      setToasterMessage("Failed to create sub-category.");
       setToasterColor("bg-danger");
       setTimeout(() => {
         setShowToaster(false);
@@ -58,23 +85,23 @@ const ViewCategories = () => {
 
   const editCategorySubmit = (formData: any) => {
     try {
-      editCategories(formData).then((data) => {
+      editSubCategories(formData).then((data) => {
         setShowToaster(true);
         setToasterMessage(data);
-        const updatedCategoriesList = categoriesList.map((cat) => {
+        const updatedSubCategoriesList = subCategoriesList.map((cat) => {
           if (cat["id"] == formData["id"]) {
             cat["name"] = formData["name"];
           }
           return cat;
         });
-        setCategoriesList([...updatedCategoriesList]);
+        setSubCategoriesList([...updatedSubCategoriesList]);
         setTimeout(() => {
           setShowToaster(false);
         }, 3000);
       });
     } catch (err) {
       setShowToaster(true);
-      setToasterMessage("Failed to update category.");
+      setToasterMessage("Failed to update sub-category.");
       setToasterColor("bg-danger");
     } finally {
       setTimeout(() => {
@@ -83,22 +110,22 @@ const ViewCategories = () => {
     }
   };
 
-  const deleteCategorySubmit = (formData: any) => {
+  const deleteSubCategorySubmit = (formData: any) => {
     try {
-      deleteCategories(formData).then((data) => {
+      deleteSubCategories(formData).then((data) => {
         setShowToaster(true);
         setToasterMessage(data);
-        const updatedCategoriesList = categoriesList.filter(
+        const updatedSubCategoriesList = subCategoriesList.filter(
           (cat) => cat["id"] !== formData["id"]
         );
-        setCategoriesList([...updatedCategoriesList]);
+        setSubCategoriesList([...updatedSubCategoriesList]);
         setTimeout(() => {
           setShowToaster(false);
         }, 3000);
       });
     } catch (err) {
       setShowToaster(true);
-      setToasterMessage("Failed to delete category.");
+      setToasterMessage("Failed to delete sub-category.");
       setToasterColor("bg-danger");
     } finally {
       setTimeout(() => {
@@ -119,11 +146,21 @@ const ViewCategories = () => {
             title="Update Category"
             handleClose={() => setEditShowModal(false)}
             handleSubmit={editCategorySubmit}
-            formElements={categoryForm}
-            formValues={currentEditCategory}
+            formElements={subCategoryForm}
+            formValues={currentEditSubCategory}
           />
         )}
-        <h2>Categories</h2>
+        {showAddCategoryModal && (
+          <FormPopUp
+            show={showAddCategoryModal}
+            title="Associate Categories"
+            handleClose={() => setShowAddCategoryModal(false)}
+            handleSubmit={editCategorySubmit}
+            formElements={addCategoryForm}
+            isMultiSelect={true}
+          />
+        )}
+        <h2>Sub-Categories</h2>
         <div>
           <Button
             variant="primary"
@@ -131,14 +168,14 @@ const ViewCategories = () => {
               setShowModal(true);
             }}
           >
-            Create Category
+            Create Sub-Category
           </Button>
           <FormPopUp
             show={showModal}
-            title="Create Category"
+            title="Create Sub-Category"
             handleClose={() => setShowModal(false)}
-            handleSubmit={createCategorySubmit}
-            formElements={categoryForm}
+            handleSubmit={createSubCategorySubmit}
+            formElements={subCategoryForm}
           />
         </div>
       </div>
@@ -148,21 +185,30 @@ const ViewCategories = () => {
           <thead>
             <tr>
               <th>Id</th>
-              <th>Category Name</th>
+              <th>Sub-Category Name</th>
+              <th>Categories Linked</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {categoriesList?.map((cat) => {
+            {subCategoriesList?.map((cat) => {
               return (
                 <tr id={cat["id"]}>
                   <td>{cat["id"]}</td>
                   <td>{cat["name"]}</td>
                   <td>
                     <Button
+                      variant="warning"
+                      onClick={() => setShowAddCategoryModal(true)}
+                    >
+                      Add Category
+                    </Button>
+                  </td>
+                  <td>
+                    <Button
                       variant="warning me-2"
                       onClick={() => {
-                        setCurrentEditCategory({
+                        setCurrentEditSubCategory({
                           id: cat["id"],
                           name: cat["name"],
                         });
@@ -173,7 +219,7 @@ const ViewCategories = () => {
                     </Button>
                     <Button
                       variant="danger"
-                      onClick={() => deleteCategorySubmit({ id: cat["id"] })}
+                      onClick={() => deleteSubCategorySubmit({ id: cat["id"] })}
                     >
                       Delete
                     </Button>
@@ -188,4 +234,4 @@ const ViewCategories = () => {
   );
 };
 
-export default ViewCategories;
+export default ViewSubCategories;

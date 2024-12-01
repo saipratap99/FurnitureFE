@@ -11,6 +11,10 @@ interface FormPopUpProps {
   handleSubmit: any;
 
   formElements: FormElement[];
+
+  formValues?: { [key: string]: string };
+
+  isMultiSelect?: boolean;
 }
 
 const FormPopUp = ({
@@ -19,8 +23,12 @@ const FormPopUp = ({
   handleSubmit,
   title,
   formElements,
+  formValues,
+  isMultiSelect,
 }: FormPopUpProps) => {
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<{ [key: string]: string }>(
+    formValues || {}
+  );
 
   // Handle input change
   const handleChange = (e: any) => {
@@ -50,14 +58,32 @@ const FormPopUp = ({
           {formElements.map((element, index) => (
             <Form.Group key={index} className="mb-3">
               <Form.Label>{element.label}</Form.Label>
-              <Form.Control
-                type={element.type || "text"}
-                name={element.name}
-                placeholder={element.placeholder || ""}
-                value={formData[element.name] || ""}
-                onChange={handleChange}
-                required={element.required || false}
-              />
+              {element?.type !== "select" ? (
+                <Form.Control
+                  type={element.type || "text"}
+                  name={element.name}
+                  placeholder={element.placeholder || ""}
+                  value={formData[element.name] || ""}
+                  onChange={handleChange}
+                  required={element.required || false}
+                />
+              ) : (
+                <Form.Select multiple={isMultiSelect}>
+                  <option disabled>{element.placeholder || ""}</option>
+                  {element.dropDownData?.map((op) => {
+                    return (
+                      op && (
+                        <option
+                          value={op?.value || ""}
+                          selected={op?.isSelected === "true" || false}
+                        >
+                          {op?.displayName || ""}
+                        </option>
+                      )
+                    );
+                  })}
+                </Form.Select>
+              )}
             </Form.Group>
           ))}
           <Button variant="primary" type="submit">
