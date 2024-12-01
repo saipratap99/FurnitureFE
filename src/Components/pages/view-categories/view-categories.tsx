@@ -85,7 +85,7 @@ const ViewCategories = () => {
 
   const deleteCategorySubmit = (formData: any) => {
     try {
-      deleteCategories(formData).then((data) => {
+      deleteCategories(formData).then((data: any) => {
         setShowToaster(true);
         setToasterMessage(data);
         const updatedCategoriesList = categoriesList.filter(
