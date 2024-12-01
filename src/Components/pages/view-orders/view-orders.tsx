@@ -25,7 +25,8 @@ const OrderDetailsPage = () => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        getOrders(userId).then((data) => {
+        const userRole = secureLocalStorage.getItem("userRole") || "USER";
+        getOrders(userRole == "ADMIN" ? null : userId).then((data) => {
           setOrders(data);
         });
       } catch (err) {

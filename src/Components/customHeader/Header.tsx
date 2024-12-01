@@ -11,6 +11,7 @@ interface Props {
 const Header: React.FC<Props> = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const userId = secureLocalStorage.getItem("userId");
+  const userRole = secureLocalStorage.getItem("userRole") || "USER";
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
     // onSearch(event.target.value);
@@ -34,9 +35,16 @@ const Header: React.FC<Props> = ({ onSearch }) => {
         /> */}
       </form>
       <ul className="navbar-nav">
+        {userRole == "ADMIN" && (
+          <li className="nav-item">
+            <a className="nav-link" href="/admin">
+              Admin
+            </a>
+          </li>
+        )}
         <li className="nav-item">
-          <a className="nav-link" href="/admin">
-            Admin
+          <a className="nav-link" href="/view-orders">
+            Orders
           </a>
         </li>
         <li className="nav-item">
