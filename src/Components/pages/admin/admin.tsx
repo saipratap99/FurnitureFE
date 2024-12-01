@@ -8,7 +8,7 @@ const AdminDashboard = () => {
   const sections = [
     { name: "Categories", path: "/view-categories" },
     { name: "Sub-Categories", path: "/view-subcategories" },
-    { name: "Products", path: "/" },
+    { name: "Products", path: "/view-products" },
     { name: "Product Tags", path: "/view-product-tags" },
     { name: "Leads", path: "/view-leads" },
     { name: "Users", path: "/view-users" },

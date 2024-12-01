@@ -22,6 +22,7 @@ import ViewProductTags from "./Components/pages/view-product-tags/view-product-t
 import ViewLeads from "./Components/pages/view-leads/view-leads";
 import AdminDashboard from "./Components/pages/admin/admin";
 import ViewUsers from "./Components/pages/view-users/view-users";
+import ViewProducts from "./Components/pages/view-products/view-products";
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -138,6 +139,7 @@ const App: React.FC = () => {
         <Route path="view-product-tags" element={<ViewProductTags />} />
         <Route path="view-leads" element={<ViewLeads />} />
         <Route path="view-users" element={<ViewUsers />} />
+        <Route path="view-products" element={<ViewProducts />} />
         <Route path="admin" element={<AdminDashboard />} />
       </Routes>
       <div>{/* <Footer/> */}</div>

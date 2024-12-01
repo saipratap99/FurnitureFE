@@ -21,10 +21,11 @@ export const getProducts = async () => {
   }
 };
 
-export const editProduct = async (payload: any) => {
+export const editProduct = async (id: any, payload: any) => {
   try {
+    delete payload["id"];
     const response = await axios.put(
-      `${apiPath}/Product/Update/${payload["id"]}`,
+      `${apiPath}/Product/Update/${id}`,
       payload
     );
     console.log("Update data:", response.data);
