@@ -8,6 +8,8 @@ import CategoryPage from "./Components/pages/category-page/categoryPage";
 import ContactUsPage from "./Components/pages/contact-us/contact-us";
 import ViewCategories from "./Components/pages/view-categories/view-categories";
 import ViewSubCategories from "./Components/pages/view-subcategories/view-subcategories";
+import ViewProductTags from "./Components/pages/view-product-tags/view-product-tags";
+import ViewLeads from "./Components/pages/view-leads/view-leads";
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -103,6 +105,8 @@ const App: React.FC = () => {
         <Route path="contact-us" element={<ContactUsPage />} />
         <Route path="view-categories" element={<ViewCategories />} />
         <Route path="view-subcategories" element={<ViewSubCategories />} />
+        <Route path="view-product-tags" element={<ViewProductTags />} />
+        <Route path="view-leads" element={<ViewLeads />} />
       </Routes>
     </BrowserRouter>
   );

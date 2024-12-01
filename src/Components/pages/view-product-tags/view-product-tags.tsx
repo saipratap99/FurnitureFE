@@ -1,54 +1,54 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { FormElement } from "../../../types/form-model";
 import FormPopUp from "../../formsPopUp/forms-pop-up";
 import {
-  postCategory,
-  getCategories,
-  editCategories,
-  deleteCategories,
-} from "../../../api/category";
+  postProductTag,
+  getProductTags,
+  editProductTag,
+  deleteProductTag,
+} from "../../../api/product-tag";
 import Toaster from "../../toaster/toaster";
 
-const ViewCategories = () => {
+const ViewProductTags = () => {
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setEditShowModal] = useState(false);
   const [showToaster, setShowToaster] = useState(false);
   const [toasterMessage, setToasterMessage] = useState<string>("");
   const [toasterColor, setToasterColor] = useState<string>("bg-success");
-  const [categoriesList, setCategoriesList] = useState<any[]>([]);
-  const [currentEditCategory, setCurrentEditCategory] = useState<any>(null);
+  const [productTagsList, setProductTagsList] = useState<any[]>([]);
+  const [currentEditProductTag, setCurrentEditProductTag] = useState<any>(null);
 
-  const categoryForm: FormElement[] = [
+  const productTagForm: FormElement[] = [
     {
-      label: "Category Name",
+      label: "Product Tag Name",
       name: "name",
       type: "text",
-      placeholder: "Please enter the category",
+      placeholder: "Please enter the product tag name",
       required: true,
     },
   ];
 
   useEffect(() => {
-    getCategories().then((data) => setCategoriesList(data));
+    getProductTags().then((data) => setProductTagsList(data));
   }, []);
 
   useEffect(() => {
-    if (currentEditCategory) setEditShowModal(true);
-  }, [currentEditCategory]);
+    if (currentEditProductTag) setEditShowModal(true);
+  }, [currentEditProductTag]);
   const createCategorySubmit = (formData: any) => {
     try {
-      postCategory(formData).then((data) => {
+      postProductTag(formData).then((data) => {
         setShowToaster(true);
-        setToasterMessage("Created category successfully.");
-        setCategoriesList([...categoriesList, data]);
+        setToasterMessage("Created Product Tag successfully.");
+        setProductTagsList([...productTagsList, data]);
         setTimeout(() => {
           setShowToaster(false);
         }, 3000);
       });
     } catch (err) {
       setShowToaster(true);
-      setToasterMessage("Failed to create category.");
+      setToasterMessage("Failed to create Product tag.");
       setToasterColor("bg-danger");
       setTimeout(() => {
         setShowToaster(false);
@@ -58,23 +58,23 @@ const ViewCategories = () => {
 
   const editCategorySubmit = (formData: any) => {
     try {
-      editCategories(formData).then((data) => {
+      editProductTag(formData).then((data) => {
         setShowToaster(true);
         setToasterMessage(data);
-        const updatedCategoriesList = categoriesList.map((cat) => {
+        const updatedProductTagsList = productTagsList.map((cat) => {
           if (cat["id"] == formData["id"]) {
             cat["name"] = formData["name"];
           }
           return cat;
         });
-        setCategoriesList([...updatedCategoriesList]);
+        setProductTagsList([...updatedProductTagsList]);
         setTimeout(() => {
           setShowToaster(false);
         }, 3000);
       });
     } catch (err) {
       setShowToaster(true);
-      setToasterMessage("Failed to update category.");
+      setToasterMessage("Failed to update Product Tag.");
       setToasterColor("bg-danger");
     } finally {
       setTimeout(() => {
@@ -85,20 +85,20 @@ const ViewCategories = () => {
 
   const deleteCategorySubmit = (formData: any) => {
     try {
-      deleteCategories(formData).then((data) => {
+      deleteProductTag(formData).then((data) => {
         setShowToaster(true);
         setToasterMessage(data);
-        const updatedCategoriesList = categoriesList.filter(
+        const updatedProductTagsList = productTagsList.filter(
           (cat) => cat["id"] !== formData["id"]
         );
-        setCategoriesList([...updatedCategoriesList]);
+        setProductTagsList([...updatedProductTagsList]);
         setTimeout(() => {
           setShowToaster(false);
         }, 3000);
       });
     } catch (err) {
       setShowToaster(true);
-      setToasterMessage("Failed to delete category.");
+      setToasterMessage("Failed to delete product tag.");
       setToasterColor("bg-danger");
     } finally {
       setTimeout(() => {
@@ -119,11 +119,11 @@ const ViewCategories = () => {
             title="Update Category"
             handleClose={() => setEditShowModal(false)}
             handleSubmit={editCategorySubmit}
-            formElements={categoryForm}
-            formValues={currentEditCategory}
+            formElements={productTagForm}
+            formValues={currentEditProductTag}
           />
         )}
-        <h2>Categories</h2>
+        <h2>Product Tags</h2>
         <div>
           <Button
             variant="primary"
@@ -138,7 +138,7 @@ const ViewCategories = () => {
             title="Create Category"
             handleClose={() => setShowModal(false)}
             handleSubmit={createCategorySubmit}
-            formElements={categoryForm}
+            formElements={productTagForm}
           />
         </div>
       </div>
@@ -148,12 +148,12 @@ const ViewCategories = () => {
           <thead>
             <tr>
               <th>Id</th>
-              <th>Category Name</th>
+              <th>Product Tag Name</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {categoriesList?.map((cat) => {
+            {productTagsList?.map((cat) => {
               return (
                 <tr id={cat["id"]}>
                   <td>{cat["id"]}</td>
@@ -162,7 +162,7 @@ const ViewCategories = () => {
                     <Button
                       variant="warning me-2"
                       onClick={() => {
-                        setCurrentEditCategory({
+                        setCurrentEditProductTag({
                           id: cat["id"],
                           name: cat["name"],
                         });
@@ -188,4 +188,4 @@ const ViewCategories = () => {
   );
 };
 
-export default ViewCategories;
+export default ViewProductTags;

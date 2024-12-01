@@ -10,6 +10,7 @@ import {
 } from "../../../api/sub-category";
 import Toaster from "../../toaster/toaster";
 import { getCategories } from "../../../api/category";
+import { postCategoryMapping } from "../../../api/categorySubCategoryMapping";
 
 const ViewSubCategories = () => {
   const [showModal, setShowModal] = useState(false);
@@ -21,8 +22,12 @@ const ViewSubCategories = () => {
   const [categoriesList, setCategoriesList] = useState<any[]>([]);
   const [currentEditSubCategory, setCurrentEditSubCategory] =
     useState<any>(null);
+  const [currentSubCategoryId, setCurrentSubCategoryId] = useState<
+    string | null
+  >(null);
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
   const [addCategoryForm, setAddCategoryForm] = useState<FormElement[]>([]);
+  const [addCategoryFormData, setAddCategoryFormData] = useState<any>();
 
   const subCategoryForm: FormElement[] = [
     {
@@ -40,25 +45,41 @@ const ViewSubCategories = () => {
   }, []);
 
   useEffect(() => {
-    const newCategoryForm: FormElement[] = [
-      {
-        label: "Select Categories",
-        name: "categoryId",
-        type: "select",
-        placeholder: "Please enter new sub-category name",
-        required: true,
-        dropDownData: categoriesList.map((cat) => {
-          return {
-            value: cat["id"],
-            displayName: cat["name"],
-            isSelected: "false",
-          };
-        }),
-      },
-    ];
-    console.log("newCategoryForm", newCategoryForm);
-    setAddCategoryForm(newCategoryForm);
-  }, [categoriesList]);
+    if (showAddCategoryModal) setCurrentSubCategoryId(null);
+  }, [showAddCategoryModal]);
+  useEffect(() => {
+    if (currentSubCategoryId) {
+      const newCategoryForm: FormElement[] = [
+        {
+          label: "Select Categories",
+          name: "categoryId",
+          type: "select",
+          placeholder: "Please select categories to map",
+          required: true,
+          isMultiSelect: true,
+          dropDownData: categoriesList?.map((cat) => {
+            return {
+              value: cat["id"],
+              displayName: cat["name"],
+              isSelected: "false",
+            };
+          }),
+        },
+      ];
+      const foundSubCat = subCategoriesList.find(
+        (subcat) => (subcat["id"] = currentSubCategoryId)
+      );
+      const formData = {
+        subCategoryId: currentSubCategoryId,
+        categoryId: foundSubCat
+          ? foundSubCat["categories"]?.map((cat: any) => cat["id"])
+          : [],
+      };
+      console.log("formd", formData);
+      setAddCategoryFormData(formData);
+      setAddCategoryForm(newCategoryForm);
+    }
+  }, [currentSubCategoryId]);
 
   useEffect(() => {
     if (currentEditSubCategory) setEditShowModal(true);
@@ -134,6 +155,24 @@ const ViewSubCategories = () => {
     }
   };
 
+  const assignCategoriesSubmit = (formData: any) => {
+    console.log("formdata", formData);
+    postCategoryMapping(
+      currentSubCategoryId || "",
+      formData?.categoryId?.map((cat: string) => {
+        return {
+          subCategoryId: currentSubCategoryId,
+          categoryId: cat,
+        };
+      })
+    ).then((data: any) => {
+      setShowToaster(true);
+      setToasterMessage(data);
+      setTimeout(() => {
+        setShowToaster(false);
+      }, 3000);
+    });
+  };
   return (
     <div className="p-4">
       <div className="d-flex justify-content-between">
@@ -155,9 +194,9 @@ const ViewSubCategories = () => {
             show={showAddCategoryModal}
             title="Associate Categories"
             handleClose={() => setShowAddCategoryModal(false)}
-            handleSubmit={editCategorySubmit}
+            handleSubmit={assignCategoriesSubmit}
             formElements={addCategoryForm}
-            isMultiSelect={true}
+            formValues={addCategoryFormData}
           />
         )}
         <h2>Sub-Categories</h2>
@@ -199,7 +238,10 @@ const ViewSubCategories = () => {
                   <td>
                     <Button
                       variant="warning"
-                      onClick={() => setShowAddCategoryModal(true)}
+                      onClick={() => {
+                        setShowAddCategoryModal(true);
+                        setCurrentSubCategoryId(cat["id"]);
+                      }}
                     >
                       Add Category
                     </Button>
