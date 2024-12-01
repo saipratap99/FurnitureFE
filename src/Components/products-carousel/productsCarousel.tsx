@@ -9,7 +9,6 @@ interface ProductsCarouselProps {
   heading: string;
 }
 
-
 const ProductsCarouselLayout: React.FC<ProductsCarouselProps> = ({
   products,
   isImages,
@@ -18,11 +17,22 @@ const ProductsCarouselLayout: React.FC<ProductsCarouselProps> = ({
 }) => {
   const [cart, setCart] = useState<any[]>([]);
 
-
-const handleAddToCart = (product: any) => {
-  setCart((prevCart) => [...prevCart, product]);
-  console.log("cart",cart)
-};
+  // Add a product to the cart
+  const handleAddToCart = (product: any) => {
+    setCart((prevCart) => {
+      console.log("add to cart", product, prevCart);
+      const existingProduct = prevCart.find((item) => item.id === product.id);
+      if (existingProduct) {
+        return prevCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : { ...item, quantity: 1 }
+        );
+      } else {
+        return [...prevCart, { ...product, quantity: 1 }];
+      }
+    });
+  };
 
   // console.log("ProductsCarouselLayout",products)
   const headingEle = <h3>{heading?.toUpperCase()}</h3>;
@@ -42,13 +52,14 @@ const handleAddToCart = (product: any) => {
       </div>
       <div className="product-cards-container row">
         <div className="product-cards-container-inner row">
-          {products.map((
-            
-            product:any) => (
-
+          {products.map((product: any) => (
             <div className="col col-xxl-3 col-lg-3 col-xl-3 col-md-4 col-sm-6 col-12">
               {/* {product.images.length} */}
-              <ProductCard product={product} height={400} onAddToCart={handleAddToCart} />
+              <ProductCard
+                product={product}
+                height={400}
+                onAddToCart={handleAddToCart}
+              />
             </div>
           ))}
         </div>

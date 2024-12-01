@@ -12,6 +12,7 @@ const AdminDashboard = () => {
     { name: "Product Tags", path: "/view-product-tags" },
     { name: "Leads", path: "/view-leads" },
     { name: "Users", path: "/view-users" },
+    { name: "Orders", path: "/view-orders" },
   ];
 
   return (

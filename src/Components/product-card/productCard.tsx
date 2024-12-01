@@ -1,19 +1,22 @@
 // ProductsLayout.tsx
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Product } from "../../types/product.model";
 import "./style.css";
 
 interface Props {
   product: any;
   height: number;
-  onAddToCart: (product: any) => void;
+  onAddToCart: any;
 }
-const ProductCard: React.FC<Props> = ({ product, height, onAddToCart }) => {
+const ProductCard: React.FC<Props> = ({
+  product,
+  height,
+  onAddToCart,
+}: Props) => {
   const inlineStyle = {
     height: height + "px",
   };
-  console.log("product card", product)
+  console.log("product card", product);
 
   const [currIndex, setCurrIndex] = useState(0);
   /** 
@@ -40,7 +43,7 @@ const ProductCard: React.FC<Props> = ({ product, height, onAddToCart }) => {
           className="carousel-indicators custom-carousel-indicators"
           style={arrowNavsStyle}
         >
-          {product.images.map((imageUrl:any, index:any) => {
+          {product.images.map((imageUrl: any, index: any) => {
             return (
               <button
                 type="button"
@@ -55,7 +58,7 @@ const ProductCard: React.FC<Props> = ({ product, height, onAddToCart }) => {
           })}
         </div>
         <div className="carousel-inner" style={imageStyle}>
-          {product.images.map((imageUrl:any, index:any) => (
+          {product.images.map((imageUrl: any, index: any) => (
             <div
               key={index}
               className={`custom-carousel carousel-item ${
@@ -97,9 +100,15 @@ const ProductCard: React.FC<Props> = ({ product, height, onAddToCart }) => {
             className="carousel slide"
             data-bs-ride="carousel"
           ></div>
-           <button className="add-to-cart-button" onClick={() => onAddToCart(product)}>
-        Add to Cart
-      </button>
+          <button
+            className="add-to-cart-button btn btn-sm btn-primary"
+            onClick={() => {
+              console.log("add to card cliced");
+              onAddToCart(product);
+            }}
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>

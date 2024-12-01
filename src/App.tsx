@@ -7,15 +7,11 @@ import HomePage from "./Components/pages/homePage/homePage";
 import CategoryPage from "./Components/pages/category-page/categoryPage";
 import ContactUsPage from "./Components/pages/contact-us/contact-us";
 import ViewCategories from "./Components/pages/view-categories/view-categories";
-import CatNewPage from "./api/cat-new";
 import SubcategoryList from "./api/cat-new";
 import ProductSearch from "./api/prodBySubcate";
 import Login from "./user-flow/login";
 import Register from "./user-flow/register";
-import secureLocalStorage from "react-secure-storage";
-import { getCategories } from "./api/category";
 import UserHome from "./user-flow/user-home";
-import Footer from "./user-flow/footer";
 
 import ViewSubCategories from "./Components/pages/view-subcategories/view-subcategories";
 import ViewProductTags from "./Components/pages/view-product-tags/view-product-tags";
@@ -23,11 +19,9 @@ import ViewLeads from "./Components/pages/view-leads/view-leads";
 import AdminDashboard from "./Components/pages/admin/admin";
 import ViewUsers from "./Components/pages/view-users/view-users";
 import ViewProducts from "./Components/pages/view-products/view-products";
+import ViewOrders from "./Components/pages/view-orders/view-orders";
 
 const App: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [userId, setUser] = useState<any>(null);
-
   const [categoriesList, setCategoriesList] = useState<any[]>([]);
 
   // console.log("userId",user)
@@ -139,6 +133,7 @@ const App: React.FC = () => {
         <Route path="view-product-tags" element={<ViewProductTags />} />
         <Route path="view-leads" element={<ViewLeads />} />
         <Route path="view-users" element={<ViewUsers />} />
+        <Route path="view-orders" element={<ViewOrders />} />
         <Route path="view-products" element={<ViewProducts />} />
         <Route path="admin" element={<AdminDashboard />} />
       </Routes>
