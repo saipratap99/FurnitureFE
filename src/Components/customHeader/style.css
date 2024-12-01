@@ -16,9 +16,10 @@
 
 .navbar{
   padding: 8px;
+  /* background-color: lightslategray; */
   z-index: 9999 !important;
 }
 
 .nav-link {
-  color: white;
+  color: white !important;
 }

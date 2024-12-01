@@ -1,52 +1,42 @@
 import React, { FC } from "react";
+
 interface CarouselProps {
   slides: string[];
   height: number;
 }
 
 const Carousel: FC<CarouselProps> = ({ slides, height }) => {
-  const inlineStyle = {
-    height: height + "px",
+  // Explicitly define the type for inlineStyle as CSSProperties
+  const inlineStyle: React.CSSProperties = {
+    height: height + "px",  // Set the height dynamically
+    objectFit: "cover", // Correctly type the objectFit property
+    width: "100%", // Ensure the image takes full width
   };
 
   return (
     <div>
       <div id="carouselExampleIndicators" className="carousel slide">
         <div className="carousel-indicators">
-          <button
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="0"
-            className=""
-            aria-label="Slide 1"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="1"
-            aria-label="Slide 2"
-            className="active"
-            aria-current="true"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide-to="2"
-            aria-label="Slide 3"
-          ></button>
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide-to={index}
+              className={index === 0 ? "active" : ""}
+              aria-label={`Slide ${index + 1}`}
+            ></button>
+          ))}
         </div>
         <div className="carousel-inner">
-          {slides.map((slide, index) => {
-            return (
-              <div
-                className={
-                  index === 0 ? "carousel-item active" : "carousel-item "
-                }
-              >
-                <img src={slide} alt="Banner1" style={inlineStyle} />
-              </div>
-            );
-          })}
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className={`carousel-item ${index === 0 ? "active" : ""}`}
+            >
+              <img src={slide} alt={`Banner ${index + 1}`} style={inlineStyle} />
+            </div>
+          ))}
         </div>
         <button
           className="carousel-control-prev"
