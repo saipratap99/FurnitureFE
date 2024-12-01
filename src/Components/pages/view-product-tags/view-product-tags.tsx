@@ -131,11 +131,11 @@ const ViewProductTags = () => {
               setShowModal(true);
             }}
           >
-            Create Category
+            Create Tag
           </Button>
           <FormPopUp
             show={showModal}
-            title="Create Category"
+            title="Create Product Tags"
             handleClose={() => setShowModal(false)}
             handleSubmit={createCategorySubmit}
             formElements={productTagForm}
