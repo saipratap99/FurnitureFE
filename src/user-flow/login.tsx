@@ -12,6 +12,7 @@ import {
   Col,
 } from "react-bootstrap";
 import Carousel from "../Components/base-elements/carousel/carousel";
+import Footer from "./footer";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const Login: React.FC = () => {
       console.log("User ID:", userId);
 
       if (userRole == "User") {
-        navigate("/user-home");
+        navigate("/");
         window.location.reload();
       } else {
       }
@@ -131,6 +132,7 @@ const Login: React.FC = () => {
           </Col>
         </Row>
       </Container>
+      <Footer />
     </>
   );
 };

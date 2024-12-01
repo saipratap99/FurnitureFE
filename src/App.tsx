@@ -20,6 +20,7 @@ import AdminDashboard from "./Components/pages/admin/admin";
 import ViewUsers from "./Components/pages/view-users/view-users";
 import ViewProducts from "./Components/pages/view-products/view-products";
 import ViewOrders from "./Components/pages/view-orders/view-orders";
+import Invoice from "./user-flow/invoice";
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -139,8 +140,9 @@ const App: React.FC = () => {
         <Route path="view-orders" element={<ViewOrders />} />
         <Route path="view-products" element={<ViewProducts />} />
         <Route path="admin" element={<AdminDashboard />} />
+        <Route path="invoice/:orderId" element={<Invoice />} />
       </Routes>
-      <div>{/* <Footer/> */}</div>
+      <div></div>
     </BrowserRouter>
   );
 };

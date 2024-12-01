@@ -1,14 +1,18 @@
 import { FC, useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import "./style.css";
+import { Navigate } from "react-router-dom";
 import SubCategoryNavigation from "../../sub-category-navigation/sub-category-navigation";
 import ProductCard from "../../product-card/productCard";
 import axios from "axios";
 import HorizontalNavigation from "../../customNavigation/HorizontalNavigation";
+import secureLocalStorage from "react-secure-storage";
+import Footer from "../../../user-flow/footer";
 interface CategoryPageProps {}
 
 const CategoryPage: FC<CategoryPageProps> = () => {
   const { categoryName } = useParams();
+  const navigate = useNavigate();
   console.log(categoryName);
   const [products, setProducts] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
@@ -79,7 +83,7 @@ const CategoryPage: FC<CategoryPageProps> = () => {
       const orderDetails = cart.map((item) => ({
         quantity: item.quantity,
         productId: item.id,
-        // userId:secureLocalStorage.getItem("userId")
+        userId: secureLocalStorage.getItem("userId"),
       }));
 
       const response = await axios.post(
@@ -88,6 +92,8 @@ const CategoryPage: FC<CategoryPageProps> = () => {
       );
       console.log("Order placed successfully:", response.data);
       alert("Order placed successfully!");
+      const orderId = response.data;
+      navigate(`/invoice/${orderId}`);
       setCart([]); // Clear the cart
     } catch (error) {
       console.error("Error placing order:", error);
@@ -120,7 +126,7 @@ const CategoryPage: FC<CategoryPageProps> = () => {
   return (
     <>
       <HorizontalNavigation categories={categories} />
-      <div className="category-container-outer my-3">
+      <div className="my-3">
         <div className="category-container-inner row mx-3">
           <div className="left-nav col-2 position-sticky top-3 my-2">
             <div>
@@ -152,48 +158,58 @@ const CategoryPage: FC<CategoryPageProps> = () => {
           </div>
           {/* Cart Section */}
           <div className="col-3">
-            <div className="cart-container p-3 border rounded shadow-sm">
-              <h4>Cart</h4>
-              {cart.length === 0 ? (
-                <p>Your cart is empty.</p>
-              ) : (
-                <ul className="list-unstyled">
-                  {cart.map((item) => (
-                    <li key={item.id} className="my-2">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                          <strong>{item.name}</strong>
-                          <p className="mb-0">${item.price}</p>
+            {cart.length === 0 ? (
+              <></>
+            ) : (
+              // <p>Your cart is empty.</p>
+              <>
+                <div className="cart-container p-3 border rounded shadow-sm">
+                  <h4>Cart</h4>
+                  <ul className="list-unstyled">
+                    {cart.map((item) => (
+                      <li key={item.id} className="my-2">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <div>
+                            <strong>{item.name}</strong>
+                            <p className="mb-0">
+                              ${item.price * item.quantity}
+                            </p>
+                            <p className="mb-0">{item.quantity}</p>
+                          </div>
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleRemoveFromCart(item.id)}
+                          >
+                            Remove
+                          </button>
                         </div>
-                        <button
-                          className="btn btn-danger btn-sm"
-                          onClick={() => handleRemoveFromCart(item.id)}
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {cart.length > 0 && (
-                <div className="mt-3">
-                  <h5>
-                    Total: $
-                    {cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
-                  </h5>
-                  <button
-                    className="btn btn-primary btn-block"
-                    onClick={handlePlaceOrder}
-                  >
-                    Place Order
-                  </button>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              )}
-            </div>
+              </>
+            )}
+            {cart.length > 0 && (
+              <div className="mt-3">
+                <h5>
+                  Total: $
+                  {cart
+                    .reduce((sum, item) => sum + item.price * item.quantity, 0)
+                    .toFixed(2)}
+                </h5>
+                <button
+                  className="btn btn-primary btn-block"
+                  onClick={handlePlaceOrder}
+                >
+                  Place Order
+                </button>
+              </div>
+            )}
+            {/* </div> */}
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

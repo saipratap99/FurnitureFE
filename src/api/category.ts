@@ -21,6 +21,18 @@ export const getCategories = async () => {
   }
 };
 
+export const getSubcategories = async (categ_id: any) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:5194/api/v1/Category/GetSubcategories/${categ_id}`
+    );
+    console.log("Get data:", response.data);
+    return response.data;
+  } catch (err) {
+    console.error("Error getting subCategories:", err);
+  }
+};
+
 export const editCategories = async (payload: any) => {
   try {
     const response = await axios.put(
@@ -33,7 +45,6 @@ export const editCategories = async (payload: any) => {
     console.error("Error posting data:", err);
   }
 };
-
 export const deleteCategories = async (payload: any) => {
   try {
     const response = await axios.delete(
