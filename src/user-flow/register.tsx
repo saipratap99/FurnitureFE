@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Container, Form, Button, Alert, Spinner, Row, Col } from "react-bootstrap";
+import Footer from "./footer";
 
 const Register: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -44,6 +45,7 @@ const role="User";
   };
 
   return (
+    <>
     <Container className="d-flex justify-content-center align-items-center vh-100">
       <Row>
         <Col md={12}>
@@ -129,6 +131,8 @@ const role="User";
         </Col>
       </Row>
     </Container>
+    <Footer/>
+    </>
   );
 };
 

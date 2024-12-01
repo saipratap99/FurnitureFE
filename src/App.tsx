@@ -18,6 +18,7 @@ import UserHome from "./user-flow/user-home";
 import Footer from "./user-flow/footer";
 
 import ViewSubCategories from "./Components/pages/view-subcategories/view-subcategories";
+import Invoice from "./user-flow/invoice";
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -130,9 +131,9 @@ const App: React.FC = () => {
         <Route path="register" element={<Register />} />
         <Route path="user-home" element={<UserHome />} />
         <Route path="view-subcategories" element={<ViewSubCategories />} />
+        <Route path="invoice/:orderId" element={<Invoice />} />
       </Routes>
       <div>
-      {/* <Footer/> */}
       </div>
     </BrowserRouter>
 

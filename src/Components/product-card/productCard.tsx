@@ -1,8 +1,10 @@
 // ProductsLayout.tsx
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Product } from "../../types/product.model";
 import "./style.css";
+import { Button } from "react-bootstrap";
 
 interface Props {
   product: any;
@@ -14,6 +16,8 @@ const ProductCard: React.FC<Props> = ({ product, height, onAddToCart }) => {
     height: height + "px",
   };
   console.log("product card", product)
+const route_path=useParams()
+console.log("route",route_path)
 
   const [currIndex, setCurrIndex] = useState(0);
   /** 
@@ -97,9 +101,10 @@ const ProductCard: React.FC<Props> = ({ product, height, onAddToCart }) => {
             className="carousel slide"
             data-bs-ride="carousel"
           ></div>
-           <button className="add-to-cart-button" onClick={() => onAddToCart(product)}>
+          {route_path.categoryName?<><Button className="add-to-cart-button" onClick={() => onAddToCart(product)}>
         Add to Cart
-      </button>
+      </Button></>:<></>}
+           
         </div>
       </div>
     </div>
