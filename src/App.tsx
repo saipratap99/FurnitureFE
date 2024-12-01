@@ -22,6 +22,9 @@ import ViewProducts from "./Components/pages/view-products/view-products";
 import ViewOrders from "./Components/pages/view-orders/view-orders";
 
 const App: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [userId, setUser] = useState<any>(null);
+
   const [categoriesList, setCategoriesList] = useState<any[]>([]);
 
   // console.log("userId",user)
